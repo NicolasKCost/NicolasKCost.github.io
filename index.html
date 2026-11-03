@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nicolas Kaiky Costa · Desenvolvedor Web Júnior</title>
+<meta name="description" content="Portfólio de Nicolas Kaiky Costa — Desenvolvedor Web Júnior em Lisboa. PHP, JavaScript, MySQL e APIs REST. Projetos em produção: Um CV por Vaga, Zágora, MovAI-Fit e Portal de Boletos.">
+<meta name="theme-color" content="#0a0e14">
+<meta property="og:title" content="Nicolas Kaiky Costa · NicolasOS">
+<meta property="og:description" content="Desenvolvedor Web Júnior em Lisboa · PHP · JavaScript · MySQL · 4 projetos em produção">
+<meta property="og:image" content="https://nicolaskcost.github.io/assets/og.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0e14'/%3E%3Ctext x='5' y='23' font-family='monospace' font-size='18' font-weight='bold' fill='%2300ff9c'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+
+<!-- arranque -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-in">
+    <pre id="boot-log"></pre>
+    <div class="boot-bar"><i id="boot-fill"></i></div>
+    <p class="boot-skip">toca ou carrega numa tecla para saltar</p>
+  </div>
+</div>
+
+<!-- barra do sistema -->
+<header class="menubar">
+  <a class="logo" href="#topo"><span class="g">◉</span> NicolasOS</a>
+  <nav id="menu">
+    <a href="#sobre">sobre</a>
+    <a href="#projetos">projetos</a>
+    <a href="#stack">stack</a>
+    <a href="#terminal">terminal</a>
+    <a href="#contacto">contacto</a>
+  </nav>
+  <div class="tray">
+    <span class="estado"><i></i> disponível</span>
+    <span id="relogio">--:--</span>
+    <button id="btn-menu" aria-label="Abrir menu">☰</button>
+  </div>
+</header>
+
+<main>
+  <!-- hero -->
+  <section id="topo" class="hero">
+    <canvas id="chuva"></canvas>
+    <div class="hero-in">
+      <p class="prompt-line"><span class="g">nicolas@lisboa</span>:<span class="c">~</span>$ <span id="hero-cmd"></span><span class="cursor">█</span></p>
+      <h1 id="nome" data-txt="NICOLAS KAIKY COSTA">NICOLAS KAIKY COSTA</h1>
+      <p class="papel">&lt; <span id="papel">Desenvolvedor Web Júnior</span> /&gt;</p>
+      <p class="hero-sub">Crio aplicações web completas, da base de dados ao servidor. Tenho 4 projetos em produção e venho do suporte de TI e do design gráfico.</p>
+      <div class="hero-btns">
+        <a class="btn" href="#projetos">./ver-projetos</a>
+        <a class="btn alt" href="#terminal">./abrir-terminal</a>
+        <a class="btn alt" href="assets/Nicolas_Kaiky_Costa_CV.pdf" download>↓ cv.pdf</a>
+      </div>
+      <ul class="hero-stats">
+        <li><b>4</b> projetos em produção</li>
+        <li><b>2015</b> a trabalhar em TI</li>
+        <li><b>Lisboa</b> disponível já</li>
+      </ul>
+    </div>
+    <a class="desce" href="#sobre" aria-label="Descer">↓ desliza para explorar o sistema</a>
+  </section>
+
+  <!-- sobre -->
+  <section id="sobre" class="sec">
+    <h2 class="titulo"><span class="num">01</span> ~/sobre</h2>
+    <div class="grid-sobre">
+      <div class="janela revela">
+        <div class="jbar"><i></i><i></i><i></i><span>perfil.json — Visual Studio Code</span></div>
+        <pre class="code" id="perfil-json"></pre>
+      </div>
+      <div class="sobre-txt revela">
+        <img class="avatar" src="assets/img/avatar.jpg" alt="Foto do Nicolas" width="120" height="120">
+        <p>Sou o <b>Nicolas</b>. Comecei no <b>design gráfico</b>, passei pelo <b>helpdesk</b> e fui durante sete anos o <b>responsável de TI</b> de uma associação de saúde no Brasil. Foi aí que escrevi a primeira automação: o envio de cerca de 850 boletos, que deixou de ser trabalho manual de dias.</p>
+        <p>Hoje construo aplicações web <b>do zero ao servidor</b>: PHP, JavaScript, MySQL, APIs, pagamentos, autenticação e publicação em Linux. Uso o <b>Claude Code</b> como assistente de programação. Eu defino o que construir e as regras, reviso, testo e corrijo até funcionar em produção.</p>
+        <p>Estou em <b>Lisboa</b> e procuro a primeira vaga numa equipa de desenvolvimento, onde aprender com pessoas mais experientes.</p>
+      </div>
+    </div>
+
+    <h3 class="sub-titulo">$ git log --graph carreira</h3>
+    <ol class="gitlog revela" id="gitlog"></ol>
+  </section>
+
+  <!-- projetos -->
+  <section id="projetos" class="sec">
+    <h2 class="titulo"><span class="num">02</span> ~/projetos <small>--em-producao</small></h2>
+    <p class="intro">Clica num projeto para abrir a janela com capturas, decisões técnicas e links.</p>
+    <div class="filtros" id="filtros"></div>
+    <div class="grid-proj" id="grid-proj"></div>
+  </section>
+
+  <!-- stack -->
+  <section id="stack" class="sec">
+    <h2 class="titulo"><span class="num">03</span> ~/stack <small>htop</small></h2>
+    <div class="janela revela">
+      <div class="jbar"><i></i><i></i><i></i><span>htop — competências em tempo real</span></div>
+      <div class="htop" id="htop"></div>
+      <div class="procs">
+        <div class="ph"><span>PID</span><span>COMANDO</span><span>ESTADO</span></div>
+        <div><span>1337</span><span>procura_vaga_dev --lisboa</span><span class="g">a correr</span></div>
+        <div><span>2048</span><span>um-cv-por-vaga</span><span>online</span></div>
+        <div><span>4096</span><span>aprender --sempre</span><span class="g">a correr</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- terminal -->
+  <section id="terminal" class="sec">
+    <h2 class="titulo"><span class="num">04</span> ~/terminal</h2>
+    <p class="intro">Um terminal a sério. Escreve <code>help</code>, ou carrega num comando.</p>
+    <div class="janela term-janela">
+      <div class="jbar"><i></i><i></i><i></i><span>bash — visitante@nicolas</span></div>
+      <div class="term" id="term">
+        <div id="term-out"></div>
+        <form id="term-form" autocomplete="off">
+          <label for="term-in"><span class="g">visitante@nicolas</span>:<span class="c">~</span>$</label>
+          <input id="term-in" spellcheck="false" autocapitalize="off" aria-label="Comando do terminal">
+        </form>
+      </div>
+      <div class="atalhos" id="atalhos"></div>
+    </div>
+
+    <div class="jogo-wrap">
+      <div class="janela">
+        <div class="jbar"><i></i><i></i><i></i><span>~/games/caca-bugs.exe</span></div>
+        <div class="jogo">
+          <canvas id="jogo" width="480" height="300"></canvas>
+          <div class="jogo-info">
+            <p>A cobra come <b class="r">bugs</b> e cresce. Usa as setas, desliza o dedo ou os botões.</p>
+            <p>pontos: <b id="pontos">0</b> · recorde: <b id="recorde">0</b></p>
+            <button class="btn" id="jogar">▶ jogar</button>
+            <div class="pad"><button data-d="u">▲</button><button data-d="l">◀</button><button data-d="d">▼</button><button data-d="r">▶</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- contacto -->
+  <section id="contacto" class="sec">
+    <h2 class="titulo"><span class="num">05</span> ~/contacto</h2>
+    <div class="janela revela">
+      <div class="jbar"><i></i><i></i><i></i><span>ssh visitante@nicolas</span></div>
+      <div class="contacto">
+        <p class="dim">A estabelecer ligação segura... <span class="g">[ OK ]</span></p>
+        <p>Ligação aberta. Tens uma vaga, um projeto ou uma ideia? Escolhe um canal:</p>
+        <div class="canais">
+          <button class="canal" id="copiar-email"><span class="dim">email</span><b>nicolaskcost@gmail.com</b><small id="copiado">clica para copiar</small></button>
+          <a class="canal" href="https://www.linkedin.com/in/nicolas-kaiky" target="_blank" rel="noopener"><span class="dim">linkedin</span><b>in/nicolas-kaiky</b><small>abrir ↗</small></a>
+          <a class="canal" href="https://github.com/NicolasKCost" target="_blank" rel="noopener"><span class="dim">github</span><b>NicolasKCost</b><small>abrir ↗</small></a>
+          <a class="canal" href="assets/Nicolas_Kaiky_Costa_CV.pdf" download><span class="dim">currículo</span><b>cv.pdf</b><small>descarregar ↓</small></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <p><span class="g">nicolas@lisboa</span>:~$ exit</p>
+  <p class="dim">logout · obrigado pela visita :) &nbsp;·&nbsp; feito à mão (e com o Claude Code) por Nicolas Kaiky Costa · 2026</p>
+</footer>
+
+<!-- janela de projeto -->
+<div id="modal" class="modal" hidden>
+  <div class="janela modal-janela" id="modal-janela" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="jbar" id="modal-bar"><button class="fechar" id="modal-fechar" aria-label="Fechar">●</button><i></i><i></i><span id="modal-path"></span></div>
+    <div class="modal-corpo" id="modal-corpo"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<script src="app.js?v=1"></script>
+</body>
+</html>
