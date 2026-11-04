@@ -185,8 +185,8 @@
     if (jsonFeito) return; jsonFeito = true;
     json.forEach(([l], i) => setTimeout(() => { pre.innerHTML += l + "\n"; }, calmo ? 0 : i * 110));
   };
-  $("#gitlog").innerHTML = CARREIRA.map(([h, y, t, m, d, next]) =>
-    `<li${next ? ' class="next"' : ""}><span class="h">${h}</span> <span class="y">[${y}]</span> <span class="t">${t}:</span> ${esc(m)}<span class="d">${esc(d)}</span></li>`).join("");
+  $("#gitlog").innerHTML = CARREIRA.map(([h, y, t, m, d, next], i) =>
+    `<li style="--i:${i}"${next ? ' class="next"' : ""}><span class="h">${h}</span> <span class="y">[${y}]</span> <span class="t">${t}:</span> ${esc(m)}<span class="d">${esc(d)}</span></li>`).join("");
 
   // aparecer ao entrar no ecrã
   const obsRevela = new IntersectionObserver(es => es.forEach(e => {
