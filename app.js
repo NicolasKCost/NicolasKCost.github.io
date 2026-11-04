@@ -126,7 +126,7 @@
         if (++f > alvo.length * 2 + 8) { clearInterval(t); h1.textContent = alvo; }
       }, 45);
     }
-    escrever($("#hero-cmd"), "./apresentar.sh --modo=hacker", 40);
+    escrever($("#hero-cmd"), "./apresentar.sh --modo=portfolio", 40);
     // papéis em rotação
     const papeis = ["Desenvolvedor Web Júnior", "PHP · JavaScript · MySQL", "4 projetos em produção", "Suporte de TI desde 2015", "Disponível em Lisboa"];
     let p = 0;
