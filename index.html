@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -38,6 +38,7 @@
     <a href="#contacto">contacto</a>
   </nav>
   <div class="tray">
+    <button id="btn-rec" class="btn-rec" title="Versão simples, sem animações"><span class="so-pc">modo </span>recrutador</button>
     <span class="estado"><i></i> disponível</span>
     <span id="relogio">--:--</span>
     <button id="btn-menu" aria-label="Abrir menu">☰</button>
@@ -58,6 +59,7 @@
         <a class="btn alt" href="#terminal">./abrir-terminal</a>
         <a class="btn alt" href="assets/Nicolas_Kaiky_Costa_CV.pdf" download>↓ cv.pdf</a>
       </div>
+      <p class="atalho-rec">Sem tempo? <a href="?modo=recrutador" id="link-rec">Vê a versão rápida para recrutadores →</a></p>
       <ul class="hero-stats">
         <li><b>4</b> projetos em produção</li>
         <li><b>2015</b> a trabalhar em TI</li>
@@ -164,6 +166,9 @@
   </section>
 </main>
 
+<!-- modo recrutador: tudo numa página simples, sem animações -->
+<section id="rec" hidden aria-label="Versão para recrutadores"></section>
+
 <footer class="rodape">
   <p><span class="g">nicolas@lisboa</span>:~$ exit</p>
   <p class="dim">logout · obrigado pela visita :) &nbsp;·&nbsp; feito à mão (e com o Claude Code) por Nicolas Kaiky Costa · 2026</p>
@@ -178,6 +183,6 @@
 </div>
 
 <div id="toast" class="toast" hidden></div>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>

@@ -102,7 +102,7 @@
     guardar("nicolasos-boot", "1");
     iniciarHero();
   };
-  if (ler("nicolasos-boot") || calmo || location.search.includes("semboot")) { boot.remove(); bootFeito = true; iniciarHero(); }
+  if (ler("nicolasos-boot") || calmo || location.search.includes("semboot") || location.search.includes("modo=recrutador")) { boot.remove(); bootFeito = true; iniciarHero(); }
   else {
     const log = $("#boot-log"), fill = $("#boot-fill");
     log.textContent = "NicolasOS v2.0 (tty1)\n\n";
@@ -294,6 +294,57 @@
     mexe(); if (!calmo) setInterval(mexe, 2400);
   }
 
+  // ------------------------------------------------------------------ modo recrutador
+  const FORMACAO = [
+    "Tecnólogo em Design Gráfico (ensino superior, concluído) · Universidade Estácio de Sá",
+    "Análise e Desenvolvimento de Sistemas · Universidade Estácio de Sá · 3 semestres (não concluído)",
+  ];
+  function desenharRec() {
+    const proj = PROJETOS.map(p => {
+      const site = p.links.find(([, u]) => !u.includes("github.com"));
+      const repo = p.links.find(([, u]) => u.includes("github.com"));
+      return `<div class="proj-r"><b>${esc(p.nome)}</b>${site ? ` <a href="${site[1]}" target="_blank" rel="noopener">${esc(site[1].replace("https://", ""))} ↗</a>` : ""}${repo ? ` <a href="${repo[1]}" target="_blank" rel="noopener">código ↗</a>` : ""}
+        <div>${esc(p.resumo)}</div><div class="t">${esc(p.tags.join(" · "))}</div><div>Destaque: ${esc(p.tecnico[0])}</div></div>`;
+    }).join("");
+    const exp = CARREIRA.filter(c => !c[5]).map(([, ano, , msg, d]) =>
+      `<div class="exp"><span class="ano">${esc(ano)}</span><b>${esc(msg.charAt(0).toUpperCase() + msg.slice(1))}</b><span class="d">${esc(d)}</span></div>`).join("");
+    $("#rec").innerHTML = `<div class="folha">
+      <h1>Nicolas Kaiky Costa</h1>
+      <div class="cargo">Desenvolvedor Web Júnior · Lisboa · disponível de imediato</div>
+      <p>Desenvolvedor web com 4 aplicações em produção, construídas da base de dados ao servidor (PHP, JavaScript, MySQL, APIs, pagamentos, autenticação, Linux). Antes, 7 anos como responsável de TI numa associação de saúde e 2 anos em helpdesk. Uso o Claude Code como assistente de programação: defino, reviso, testo e corrijo até funcionar em produção.</p>
+      <div class="contactos">
+        <a class="prim" href="mailto:nicolaskcost@gmail.com">✉ nicolaskcost@gmail.com</a>
+        <a href="https://www.linkedin.com/in/nicolas-kaiky" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/NicolasKCost" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="assets/Nicolas_Kaiky_Costa_CV.pdf" download>↓ CV em PDF</a>
+      </div>
+      <h2>Projetos em produção</h2>${proj}
+      <h2>Tecnologias (onde as uso)</h2>
+      <ul class="lista">${STACK.map(t => `<li><b>${esc(t.nome)}</b> — ${esc(t.uso)} <span style="color:#64748b">(${esc(t.proj.map(nomeProj).join(", "))})</span></li>`).join("")}</ul>
+      <h2>Experiência</h2>${exp}
+      <h2>Formação e idiomas</h2>
+      ${FORMACAO.map(f => `<p>${esc(f)}</p>`).join("")}
+      <p>Português (nativo) · Inglês (básico, leitura de documentação técnica) · Francês (básico) · Carta de condução</p>
+      <div class="rodape-rec"><span>Versão rápida do portfólio de Nicolas Kaiky Costa.</span>
+        <span><button class="sec2" id="rec-imprimir">Imprimir / PDF</button> <button id="rec-voltar">Ver a versão interativa →</button></span></div>
+    </div>`;
+    $("#rec-voltar").onclick = () => modoRec(false);
+    $("#rec-imprimir").onclick = () => print();
+  }
+  function modoRec(ligar) {
+    if (ligar && !$("#rec").innerHTML) desenharRec();
+    document.body.classList.toggle("modo-rec", ligar);
+    $("#rec").hidden = !ligar;
+    $("#btn-rec").innerHTML = ligar ? "← NicolasOS" : '<span class="so-pc">modo </span>recrutador';
+    const u = new URL(location.href);
+    if (ligar) u.searchParams.set("modo", "recrutador"); else u.searchParams.delete("modo");
+    history.replaceState(null, "", u.pathname + u.search + (ligar ? "" : u.hash));
+    scrollTo(0, 0);
+  }
+  $("#btn-rec").onclick = () => modoRec(!document.body.classList.contains("modo-rec"));
+  $("#link-rec").onclick = e => { e.preventDefault(); modoRec(true); };
+  if (new URLSearchParams(location.search).get("modo") === "recrutador") modoRec(true);
+
   // ------------------------------------------------------------------ terminal
   const out = $("#term-out"), inp = $("#term-in"), term = $("#term");
   const hist = []; let hi = 0;
@@ -306,10 +357,12 @@
   <span class="c">stack</span>        tecnologias
   <span class="c">cv</span>           descarrega o currículo
   <span class="c">contacto</span>     como falar comigo
+  <span class="c">recrutador</span>   versão rápida, sem animações
   <span class="c">jogar</span>        caça aos bugs
   <span class="c">matrix</span>       ...
   <span class="c">clear</span>        limpa o ecrã
   <span class="dim">e há mais um escondido, para recrutadores.</span>`),
+    recrutador: () => { print("a abrir a versão rápida para recrutadores..."); setTimeout(() => modoRec(true), 300); },
     sobre: () => print("Nicolas Kaiky Costa · Desenvolvedor Web Júnior em Lisboa.\nDesign gráfico → helpdesk → 7 anos de responsável de TI → aplicações web em produção.\nPHP, JavaScript, MySQL, APIs REST, Linux. Disponível de imediato."),
     whoami: () => COMANDOS.sobre(),
     projetos: () => print(PROJETOS.map(p => `<span class="g">●</span> <span class="c">${p.id.padEnd(8)}</span> ${esc(p.nome)} — ${esc(p.resumo)}`).join("\n") + `\n<span class="dim">usa: abrir cv</span>`),

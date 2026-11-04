@@ -215,6 +215,43 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 .festa div { font: 800 clamp(26px, 6vw, 60px) var(--mono); color: var(--g); text-shadow: 0 0 30px var(--g); background: #000c; padding: 20px 30px; border: 2px solid var(--g); border-radius: 14px; animation: festa 3s forwards; text-align: center; }
 @keyframes festa { 0% { transform: scale(.5); opacity: 0; } 15% { transform: scale(1.05); opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
 
+/* modo recrutador */
+.btn-rec { font: 600 12.5px var(--mono); color: #04140c; background: var(--g); border: 0; border-radius: 6px; padding: 5px 11px; white-space: nowrap; }
+.btn-rec:hover { box-shadow: 0 0 16px #00ff9c66; }
+.atalho-rec { margin: 18px 0 0; font-size: 14px; color: var(--mut); }
+.atalho-rec a { color: var(--g); border-bottom: 1px dashed var(--g2); }
+body.modo-rec { background: #f4f6f8; color: #1f2937; }
+body.modo-rec::after, body.modo-rec main, body.modo-rec .rodape, body.modo-rec #boot, body.modo-rec .menubar nav, body.modo-rec .estado, body.modo-rec #relogio, body.modo-rec #btn-menu { display: none !important; }
+body.modo-rec .menubar { background: #0a0e14; }
+#rec { max-width: 860px; margin: 0 auto; padding: 84px 20px 50px; font: 15.5px/1.6 var(--sans); color: #1f2937; }
+#rec .folha { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 34px 38px; box-shadow: 0 10px 30px #0f172a12; }
+#rec h1 { font: 800 30px var(--sans); margin: 0; color: #0f172a; }
+#rec .cargo { font-weight: 600; color: #047857; margin: 2px 0 10px; font-size: 17px; }
+#rec .contactos { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+#rec .contactos a { font: 600 13.5px var(--sans); color: #0f172a; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; }
+#rec .contactos a.prim { background: #047857; color: #fff; border-color: #047857; }
+#rec h2 { font: 700 13px var(--sans); text-transform: uppercase; letter-spacing: 1.2px; color: #047857; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; margin: 26px 0 12px; }
+#rec p { margin: 0 0 8px; }
+#rec .proj-r { margin: 0 0 14px; }
+#rec .proj-r b { color: #0f172a; font-size: 16px; }
+#rec .proj-r a { color: #047857; font-size: 13.5px; margin-left: 6px; }
+#rec .proj-r .t { color: #64748b; font-size: 13.5px; }
+#rec ul.lista { margin: 0; padding-left: 18px; }
+#rec ul.lista li { margin-bottom: 6px; }
+#rec .exp { display: grid; grid-template-columns: 92px 1fr; gap: 2px 14px; margin-bottom: 10px; }
+#rec .exp .ano { color: #64748b; font-size: 14px; padding-top: 1px; }
+#rec .exp b { color: #0f172a; }
+#rec .exp span.d { grid-column: 2; color: #475569; font-size: 14.5px; }
+#rec .rodape-rec { display: flex; gap: 10px; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13.5px; color: #64748b; }
+#rec .rodape-rec button { font: 600 13.5px var(--sans); background: #0f172a; color: #fff; border: 0; border-radius: 8px; padding: 9px 14px; }
+#rec .rodape-rec button.sec2 { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; }
+@media print {
+  .menubar, #rec .rodape-rec { display: none !important; }
+  body.modo-rec { background: #fff; }
+  #rec { padding: 0; max-width: none; }
+  #rec .folha { border: 0; box-shadow: none; padding: 0; }
+}
+
 @media (max-width: 860px) {
   .menubar { gap: 10px; padding: 0 14px; }
   .menubar nav { display: none; position: absolute; top: 52px; left: 0; right: 0; flex-direction: column; gap: 0; margin: 0; background: #0a0e14f5; border-bottom: 1px solid var(--linha); }
@@ -222,6 +259,10 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
   .menubar nav a { padding: 14px 20px; border-top: 1px solid #ffffff0a; }
   #btn-menu { display: block; }
   #relogio { display: none; }
+  .so-pc { display: none; }
+  #rec .folha { padding: 24px 20px; }
+  #rec .exp { grid-template-columns: 1fr; }
+  #rec .exp span.d { grid-column: 1; }
   .grid-sobre, .grid-proj { grid-template-columns: 1fr; }
   .htop { grid-template-columns: 1fr; }
   .meter { grid-template-columns: 22px 96px 1fr; }
