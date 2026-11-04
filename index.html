@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -97,15 +97,18 @@
 
   <!-- stack -->
   <section id="stack" class="sec">
-    <h2 class="titulo"><span class="num">03</span> ~/stack <small>htop</small></h2>
+    <h2 class="titulo"><span class="num">03</span> ~/stack <small>--projects</small></h2>
+    <p class="intro">Sem percentagens: cada tecnologia mostra onde a usei. Clica no nome para filtrar os projetos, ou num projeto para o abrir.</p>
     <div class="janela revela">
-      <div class="jbar"><i></i><i></i><i></i><span>htop — competências em tempo real</span></div>
-      <div class="htop" id="htop"></div>
+      <div class="jbar"><i></i><i></i><i></i><span>nicolas@lisboa:~$ stack --projects</span></div>
+      <div class="stack-lista" id="stack-lista"></div>
       <div class="procs">
-        <div class="ph"><span>PID</span><span>COMANDO</span><span>ESTADO</span></div>
-        <div><span>1337</span><span>procura_vaga_dev --lisboa</span><span class="g">a correr</span></div>
-        <div><span>2048</span><span>um-cv-por-vaga</span><span>online</span></div>
-        <div><span>4096</span><span>aprender --sempre</span><span class="g">a correr</span></div>
+        <p class="procs-tit">processos ativos <span class="dim">· CPU decorativo</span></p>
+        <div class="ph"><span>PID</span><span>COMANDO</span><span>CPU</span><span>ESTADO</span></div>
+        <div><span>1337</span><span>procura_vaga_dev --lisboa</span><span class="cpu"><i></i></span><span class="g">a correr</span></div>
+        <div><span>2048</span><span>projetos_web --producao</span><span class="cpu"><i></i></span><span class="g">online</span></div>
+        <div><span>4096</span><span>aprender --sempre</span><span class="cpu"><i></i></span><span class="g">a correr</span></div>
+        <div><span>8080</span><span>cafe.service</span><span class="cpu"><i></i></span><span class="a">a reabastecer</span></div>
       </div>
     </div>
   </section>
@@ -175,6 +178,6 @@
 </div>
 
 <div id="toast" class="toast" hidden></div>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

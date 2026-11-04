@@ -77,7 +77,17 @@
     ["e28b6c4", "2015–17", "feat", "Helpdesk de 1.ª linha (Contax) e formador de informática (Cinética)", "Atendimento técnico com registo de cada pedido em tickets; aulas de informática e design."],
     ["1c0ffee", "2011", "init", "design gráfico em gráficas e comunicação visual", "Onde aprendi a pensar em quem está do outro lado: depois fiz o curso de Design Gráfico na Estácio."],
   ];
-  const STACK = [["php", 90], ["javascript", 82], ["mysql", 80], ["html/css", 85], ["apis rest", 78], ["wordpress", 65], ["linux/ssh", 70], ["git", 75]];
+  // Tecnologias sem "níveis": o que fiz com cada uma e em que projetos (ids de PROJETOS; "site" = este portfólio).
+  const STACK = [
+    { nome: "PHP", selo: "produção", uso: "back-end · APIs · autenticação · pagamentos · webhooks", proj: ["cv", "zagora", "boletos", "movai"] },
+    { nome: "JavaScript", selo: "produção", uso: "interfaces · DOM · fetch · PWA e service workers", proj: ["cv", "movai", "site"] },
+    { nome: "MySQL / SQL", selo: "produção", uso: "modelação · consultas · transações · migrações", proj: ["cv", "zagora", "boletos"] },
+    { nome: "APIs REST e integrações", selo: "produção", uso: "Stripe · Google OAuth e Gmail · Telegram · Lemon Squeezy", proj: ["cv", "zagora", "movai"] },
+    { nome: "IA (LLMs)", selo: "produção", uso: "Gemini · Groq · Cerebras, sempre com validação em PHP", proj: ["cv", "zagora", "movai"] },
+    { nome: "WordPress", selo: "produção", uso: "plugin próprio · $wpdb · cargos e permissões", proj: ["boletos"] },
+    { nome: "HTML / CSS", selo: "produção", uso: "interfaces responsivas · animações · acessibilidade", proj: ["cv", "movai", "site"] },
+    { nome: "Linux / Git / SSH", selo: "uso prático", uso: "publicação · backups · testes em staging · cron", proj: ["cv", "zagora", "boletos", "movai"] },
+  ];
 
   // ------------------------------------------------------------------ arranque
   const boot = $("#boot");
@@ -193,16 +203,22 @@
     if (!e.isIntersecting) return;
     e.target.classList.add("visto");
     if (e.target.querySelector && e.target.querySelector("#perfil-json")) escreverJson();
-    if (e.target.querySelector && e.target.querySelector("#htop")) encherHtop();
+    if (e.target.querySelector && e.target.querySelector("#stack-lista")) encherHtop();
     obsRevela.unobserve(e.target);
   }), { threshold: .15 });
   $$(".revela").forEach(el => obsRevela.observe(el));
 
   // ------------------------------------------------------------------ projetos
   const FILTROS = [["todos", "todos"], ["saas", "SaaS"], ["ia", "com IA"], ["cliente", "para cliente"]];
-  let filtro = "todos";
+  let filtro = "todos", filtroTec = null;
   function desenharProjetos() {
-    $("#grid-proj").innerHTML = PROJETOS.filter(p => filtro === "todos" || p.tipo.includes(filtro)).map(p => `
+    const tec = filtroTec && STACK.find(t => t.nome === filtroTec);
+    const velho = $("#filtro-tec"); if (velho) velho.remove();
+    if (tec) {
+      $("#filtros").insertAdjacentHTML("beforeend", `<button id="filtro-tec" class="on tech">tecnologia: ${esc(tec.nome)} ✕</button>`);
+      $("#filtro-tec").onclick = () => { filtroTec = null; desenharProjetos(); };
+    }
+    $("#grid-proj").innerHTML = PROJETOS.filter(p => (filtro === "todos" || p.tipo.includes(filtro)) && (!tec || tec.proj.includes(p.id))).map(p => `
       <button class="proj revela visto" data-id="${p.id}">
         <div class="shot" style="background-image:url('assets/img/${p.imgs[0][0]}')"></div>
         <div class="pi"><h3>${esc(p.nome)} <span class="on">● online</span></h3><p>${esc(p.resumo)}</p>
@@ -211,7 +227,7 @@
     $$(".proj").forEach(b => b.onclick = () => abrirProjeto(b.dataset.id));
   }
   $("#filtros").innerHTML = FILTROS.map(([v, t]) => `<button data-f="${v}" class="${v === filtro ? "on" : ""}">${t}</button>`).join("");
-  $$("#filtros button").forEach(b => b.onclick = () => { filtro = b.dataset.f; $$("#filtros button").forEach(x => x.classList.toggle("on", x === b)); desenharProjetos(); });
+  $$("#filtros button").forEach(b => b.onclick = () => { filtro = b.dataset.f; $$("#filtros button[data-f]").forEach(x => x.classList.toggle("on", x === b)); desenharProjetos(); });
   desenharProjetos();
 
   // janela do projeto (arrastável no computador)
@@ -256,11 +272,26 @@
   })();
 
   // ------------------------------------------------------------------ htop
-  $("#htop").innerHTML = STACK.map(([n, v], i) => `<div class="meter"><span class="i">${i + 1}</span><span class="l">${n}</span><span class="bar"><i data-v="${v}"></i></span></div>`).join("");
+  const nomeProj = id => id === "site" ? "este site (NicolasOS)" : PROJETOS.find(p => p.id === id).nome;
+  $("#stack-lista").innerHTML = STACK.map((t, i) => `<div class="tec">
+      <button class="tec-nome" data-i="${i}" title="Ver projetos com ${esc(t.nome)}">${esc(t.nome)}</button>
+      <span class="selo${t.selo === "produção" ? "" : " pratico"}">${t.selo === "produção" ? "● em produção" : "uso prático"}</span>
+      <span class="tec-uso">${esc(t.uso)}</span>
+      <div class="tec-proj">${t.proj.map(id => `<button data-p="${id}">${esc(nomeProj(id))}</button>`).join("")}</div>
+    </div>`).join("");
+  $$(".tec-nome").forEach(b => b.onclick = () => {
+    filtroTec = STACK[b.dataset.i].nome; filtro = "todos";
+    $$("#filtros button[data-f]").forEach(x => x.classList.toggle("on", x.dataset.f === "todos"));
+    desenharProjetos(); $("#projetos").scrollIntoView({ behavior: "smooth" });
+  });
+  $$(".tec-proj button").forEach(b => b.onclick = () => {
+    if (b.dataset.p === "site") { scrollTo({ top: 0, behavior: "smooth" }); toast("estás a usá-lo agora mesmo :)"); }
+    else abrirProjeto(b.dataset.p);
+  });
+  // "CPU" dos processos: puramente decorativo
   function encherHtop() {
-    $$("#htop i").forEach(i => { i.style.width = i.dataset.v + "%"; });
-    if (calmo) return;
-    setInterval(() => $$("#htop i").forEach(i => { const v = +i.dataset.v; i.style.width = Math.max(30, Math.min(100, v + (Math.random() * 8 - 4))) + "%"; }), 2600);
+    const mexe = () => $$(".procs .cpu i").forEach((i, k) => { i.style.width = (k === 3 ? 15 + Math.random() * 25 : 45 + Math.random() * 55) + "%"; });
+    mexe(); if (!calmo) setInterval(mexe, 2400);
   }
 
   // ------------------------------------------------------------------ terminal
@@ -284,7 +315,7 @@
     projetos: () => print(PROJETOS.map(p => `<span class="g">●</span> <span class="c">${p.id.padEnd(8)}</span> ${esc(p.nome)} — ${esc(p.resumo)}`).join("\n") + `\n<span class="dim">usa: abrir cv</span>`),
     ls: () => print(`<span class="c">projetos/</span>  <span class="c">games/</span>  sobre.md  cv.pdf  contacto.txt  <span class="dim">.segredo</span>`),
     abrir: a => { const p = PROJETOS.find(x => x.id === (a || "").trim()); if (!p) return print(`abrir: projeto '${esc(a || "")}' não encontrado. Tenta: cv, zagora, boletos, movai`, "r"); print(`a abrir ${esc(p.nome)}...`); setTimeout(() => abrirProjeto(p.id), 300); },
-    stack: () => print(STACK.map(([n, v]) => `${n.padEnd(11)} [${"|".repeat(Math.round(v / 5)).padEnd(20)}]`).join("\n")),
+    stack: () => print(STACK.map(t => `<span class="g">${t.selo === "produção" ? "●" : "○"}</span> <span class="c">${esc(t.nome.padEnd(24))}</span> ${esc(t.proj.map(nomeProj).join(", "))}`).join("\n") + `\n<span class="dim">sem percentagens: só onde está em uso.</span>`),
     cv: () => { print("a descarregar cv.pdf ↓"); const a = document.createElement("a"); a.href = "assets/Nicolas_Kaiky_Costa_CV.pdf"; a.download = ""; a.click(); },
     contacto: () => print(`email     <a href="mailto:nicolaskcost@gmail.com">nicolaskcost@gmail.com</a>\nlinkedin  <a href="https://www.linkedin.com/in/nicolas-kaiky" target="_blank" rel="noopener">in/nicolas-kaiky</a>\ngithub    <a href="https://github.com/NicolasKCost" target="_blank" rel="noopener">NicolasKCost</a>`),
     jogar: () => { print("a abrir ~/games/caca-bugs.exe ..."); $(".jogo-wrap").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(iniciarJogo, 500); },
@@ -322,9 +353,51 @@
   print(`NicolasOS v2.0 · bem-vindo, visitante.\nEscreve <span class="c">help</span> para ver os comandos.`, "dim");
 
   function festa() {
-    const f = document.createElement("div"); f.className = "festa";
-    f.innerHTML = "<div>🎉 ACESSO CONCEDIDO 🎉<br><small style='font-size:.4em;color:#e6edf3'>nicolaskcost@gmail.com</small></div>";
-    document.body.appendChild(f); setTimeout(() => f.remove(), 3100);
+    if ($(".contratar")) return;
+    const assunto = encodeURIComponent("Vi o teu portfólio — vamos conversar?");
+    const corpo = encodeURIComponent("Olá Nicolas,\n\nVi o teu portfólio (nicolaskcost.github.io) e gostava de falar contigo sobre uma oportunidade.\n\n");
+    const f = document.createElement("div"); f.className = "contratar";
+    f.innerHTML = `<div class="janela" role="dialog" aria-modal="true" aria-label="Acesso concedido">
+      <div class="jbar"><button class="fechar" aria-label="Fechar">●</button><i></i><i></i><span>sudo contratar-nicolas</span></div>
+      <div class="cj">
+        <div class="dim">[sudo] a validar credenciais de recrutador...</div>
+        <div class="pbar"><i></i></div>
+        <div class="dim cj-estado">a preparar entrevista... 0%</div>
+        <div class="fim">
+          <div class="ok">ACESSO CONCEDIDO</div>
+          <p style="text-align:center;margin:0">O Nicolas está disponível de imediato em Lisboa.<br><span class="dim">Escolhe o próximo passo:</span></p>
+          <div class="acoes">
+            <a class="btn" href="mailto:nicolaskcost@gmail.com?subject=${assunto}&body=${corpo}">✉ enviar e-mail</a>
+            <a class="btn alt" href="https://www.linkedin.com/in/nicolas-kaiky" target="_blank" rel="noopener">in LinkedIn</a>
+            <a class="btn alt" href="assets/Nicolas_Kaiky_Costa_CV.pdf" download>↓ cv.pdf</a>
+          </div>
+        </div>
+      </div></div>`;
+    document.body.appendChild(f);
+    const tecla = e => { if (e.key === "Escape") fechar(); };
+    const fechar = () => { f.remove(); removeEventListener("keydown", tecla); };
+    addEventListener("keydown", tecla);
+    f.querySelector(".fechar").onclick = fechar;
+    f.addEventListener("click", e => { if (e.target === f) fechar(); });
+    requestAnimationFrame(() => { f.querySelector(".pbar i").style.width = "100%"; });
+    let p = 0;
+    const t = setInterval(() => {
+      p = Math.min(100, p + 7 + (Math.random() * 9 | 0));
+      f.querySelector(".cj-estado").textContent = p < 100 ? `a preparar entrevista... ${p}%` : "entrevista pronta ✓";
+      if (p >= 100) { clearInterval(t); f.classList.add("pronto"); chispas(); f.querySelector(".acoes .btn").focus(); }
+    }, 110);
+  }
+  function chispas() {
+    if (calmo) return;
+    const cx = innerWidth / 2, cy = innerHeight / 2, sim = "01{}<>/$#✓";
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement("span"); s.className = "chispa";
+      s.textContent = sim[Math.random() * sim.length | 0];
+      const ang = Math.random() * Math.PI * 2, d = 120 + Math.random() * 220;
+      s.style.left = cx + "px"; s.style.top = cy + "px";
+      s.style.setProperty("--dx", Math.cos(ang) * d + "px"); s.style.setProperty("--dy", Math.sin(ang) * d + "px"); s.style.setProperty("--r", (Math.random() * 360 | 0) + "deg");
+      document.body.appendChild(s); setTimeout(() => s.remove(), 1700);
+    }
   }
 
   // ------------------------------------------------------------------ contacto

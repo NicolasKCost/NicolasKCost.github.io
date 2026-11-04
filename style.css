@@ -133,6 +133,24 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 .m-txt ul { padding-left: 20px; margin: 0; }
 .m-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 
+/* stack --projects */
+.stack-lista { padding: 6px 22px 10px; }
+.tec { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid #ffffff10; }
+.tec:last-child { border-bottom: 0; }
+.tec-nome { font: 700 17px var(--mono); color: var(--texto); background: none; border: 0; padding: 0; text-align: left; justify-self: start; }
+.tec-nome:hover, .tec-nome:focus-visible { color: var(--g); }
+.tec-nome::after { content: " ↗"; font-size: .75em; color: var(--mut); }
+.tec-uso { grid-column: 1 / -1; color: var(--mut); font-size: 14px; }
+.tec-proj { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.tec-proj button { font: 12.5px var(--mono); color: var(--g); background: var(--gbg); border: 1px solid #1f8a5b88; border-radius: 5px; padding: 2px 9px; }
+.tec-proj button:hover { border-color: var(--g); box-shadow: 0 0 12px #00ff9c33; }
+.selo { grid-column: 2; grid-row: 1; align-self: start; font: 11.5px var(--mono); border-radius: 20px; padding: 2px 10px; white-space: nowrap; color: var(--g); border: 1px solid var(--g2); background: var(--gbg); }
+.selo.pratico { color: var(--a); border-color: #e3b34166; background: #e3b3410f; }
+.procs-tit { font: 12px var(--mono); color: var(--mut); text-transform: uppercase; letter-spacing: 1px; margin: 4px 0 8px; }
+.procs .cpu { display: flex; align-items: center; }
+.procs .cpu i { display: block; height: 8px; width: 40%; background: repeating-linear-gradient(90deg, var(--g) 0 3px, transparent 3px 5px); transition: width 1.2s ease-in-out; }
+.filtros .tech { border-color: var(--c); color: var(--c); }
+
 /* htop */
 .htop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 36px; padding: 20px 22px; font: 14px var(--mono); }
 .meter { display: grid; grid-template-columns: 22px 110px 1fr; align-items: center; gap: 8px; }
@@ -140,11 +158,11 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 .meter .bar { position: relative; height: 14px; border-left: 1px solid var(--mut); border-right: 1px solid var(--mut); padding: 0 4px; }
 .meter .bar i { display: block; height: 100%; background: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 6px); color: var(--g); width: 0; transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
 .procs { font: 13px var(--mono); padding: 0 22px 18px; }
-.procs > div { display: grid; grid-template-columns: 70px 1fr 90px; padding: 3px 8px; }
+.procs > div { display: grid; grid-template-columns: 64px 1fr 110px 120px; gap: 8px; padding: 3px 8px; align-items: center; }
 .procs .ph { background: #0e7a4d; color: #fff; border-radius: 3px; }
 
 /* terminal */
-.term-janela { max-width: 900px; }
+.term-janela { width: 100%; }
 .term { background: #05080c; padding: 14px 16px; font: 14px/1.6 var(--mono); height: 380px; overflow-y: auto; cursor: text; }
 #term-out div { white-space: pre-wrap; word-break: break-word; }
 #term-form { display: flex; gap: 8px; align-items: center; }
@@ -155,9 +173,9 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 .atalhos button:hover { border-color: var(--g); color: var(--g); }
 
 /* jogo */
-.jogo-wrap { margin-top: 26px; max-width: 900px; }
-.jogo { display: grid; grid-template-columns: auto 1fr; gap: 20px; padding: 18px; align-items: center; }
-#jogo { background: #05080c; border: 1px solid var(--linha); border-radius: 6px; width: 480px; max-width: 100%; height: auto; touch-action: none; image-rendering: pixelated; }
+.jogo-wrap { margin-top: 26px; }
+.jogo { display: grid; grid-template-columns: minmax(0, 1.4fr) 1fr; gap: 28px; padding: 22px; align-items: center; }
+#jogo { background: #05080c; border: 1px solid var(--linha); border-radius: 6px; width: 100%; height: auto; touch-action: none; image-rendering: pixelated; }
 .jogo-info { font: 14px var(--mono); }
 .jogo-info p { margin: 0 0 10px; color: #c9d1d9; }
 .pad { display: none; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 44px); gap: 6px; margin-top: 12px; }
@@ -177,7 +195,22 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 .rodape p { margin: 4px 0; }
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 150; background: var(--gbg); border: 1px solid var(--g); color: var(--g); font: 13px var(--mono); padding: 8px 16px; border-radius: 8px; }
 
-/* efeito "sudo contratar" */
+/* janela "sudo contratar" */
+.contratar { position: fixed; inset: 0; z-index: 160; display: grid; place-items: center; background: #000b; backdrop-filter: blur(3px); padding: 16px; }
+.contratar .janela { width: min(520px, 100%); border-color: var(--g); box-shadow: 0 0 60px #00ff9c44; animation: abre .3s ease-out; }
+.contratar .cj { padding: 22px 24px 24px; font: 14px/1.6 var(--mono); }
+.contratar .ok { font: 800 clamp(24px, 6vw, 34px) var(--mono); color: var(--g); text-shadow: 0 0 22px var(--g); margin: 10px 0 6px; text-align: center; }
+.contratar .pbar { height: 10px; border: 1px solid var(--linha); border-radius: 3px; margin: 10px 0 4px; }
+.contratar .pbar i { display: block; height: 100%; width: 0; background: var(--g); box-shadow: 0 0 12px var(--g); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+.contratar .acoes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 18px; }
+.contratar .acoes .btn { text-align: center; padding: 11px 8px; font-size: 13.5px; }
+.contratar .fim { opacity: 0; transition: opacity .5s; }
+.contratar.pronto .fim { opacity: 1; }
+.chispa { position: fixed; z-index: 161; pointer-events: none; font: 700 16px var(--mono); color: var(--g); text-shadow: 0 0 10px var(--g); animation: chispa 1.6s ease-out forwards; }
+@keyframes chispa { to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; } }
+@media (max-width: 520px) { .contratar .acoes { grid-template-columns: 1fr; } }
+
+/* (antigo) efeito festa */
 .festa { position: fixed; inset: 0; z-index: 160; pointer-events: none; display: grid; place-items: center; }
 .festa div { font: 800 clamp(26px, 6vw, 60px) var(--mono); color: var(--g); text-shadow: 0 0 30px var(--g); background: #000c; padding: 20px 30px; border: 2px solid var(--g); border-radius: 14px; animation: festa 3s forwards; text-align: center; }
 @keyframes festa { 0% { transform: scale(.5); opacity: 0; } 15% { transform: scale(1.05); opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
@@ -197,7 +230,8 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
   .pad { display: grid; }
   .avatar { width: 92px; height: 92px; }
   .term { height: 330px; font-size: 13px; }
-  .procs > div { grid-template-columns: 52px 1fr 76px; }
+  .procs > div { grid-template-columns: 40px 1fr 50px 86px; gap: 6px; font-size: 11.5px; }
+  .stack-lista { padding: 4px 16px 8px; }
 }
 @media (max-width: 460px) { .canais { grid-template-columns: 1fr; } .hero-stats { gap: 16px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
